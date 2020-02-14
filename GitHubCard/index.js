@@ -18,12 +18,18 @@ const cards = document.querySelector('.cards');
 
 axios.get("https://api.github.com/users/bergeronmatt")
 .then(response => {
-
-  response.data.map(p =>{
-    cards.append(createCard(p));
- })
-
+  cards.append(createCard(response.data))
 })
+.catch(err => {
+  console.log("the data was not returned", err)
+})
+axios.get("https://api.github.com/users/bergeronmatt/followers")
+.then(response =>{
+  response.data.forEach(p =>{
+    cards.append(createCard(p));
+  })
+})
+
 .catch(err => {
   console.log("the data was not returned", err)
 })
@@ -38,10 +44,7 @@ axios.get("https://api.github.com/users/bergeronmatt")
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
-
 const followersArray = [];
-
-
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -78,29 +81,36 @@ function createCard(object){
   const following = document.createElement('p');
   const bio = document.createElement('p');
 
-  //set up structure of our elements
-  card.append(img, cardInfo);
-  cardInfo.append(name, userName, location, profile, followers, following, bio)
-  profile.append(address);
-
+  //add classes to the elements
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username');
+  
   //set text content
   img.src = object.avatar_url;
   name.textContent = object.name;
-  userName.textContent = object.userName;
+  userName.textContent = object.login;
   location.textContent = object.location;
   address.href = object.url;
   followers.textContent = object.followers;
   following.textContent = object.following;
-  bio.textContent =object.bio;
+  bio.textContent = object.bio;
 
-  //add classes to the elements
-  card.classList.add('card');
-  cardInfo.classList.add('card-info');
-  cardTitle.classList.add('name');
-  userName.classList.add('username');
+  //set up structure of our elements
+  card.appendChild(img);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+  profile.appendChild(address);
 
-  console.log(object);
-  
+  console.log(object)
+
   return card;
 }
 
