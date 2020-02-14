@@ -91,11 +91,13 @@ function createCard(object){
   img.src = object.avatar_url;
   name.textContent = object.name;
   userName.textContent = object.login;
-  location.textContent = object.location;
-  address.href = object.url;
-  followers.textContent = object.followers;
-  following.textContent = object.following;
-  bio.textContent = object.bio;
+  location.textContent = `Location: ${object.location}`;
+  profile.textContent = "Profile: ";
+  address.textContent = object.html_url;
+  address.href = object.html_url;
+  followers.textContent = `Followers: ${object.followers}`;
+  following.textContent = `Following: ${object.following}`;
+  bio.textContent = `Bio: ${object.bio}`;
 
   //set up structure of our elements
   card.appendChild(img);
